@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dicom viewer</title>
+   
+    <link href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .btn-default{
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    
+    <main class="container">
+    <h1>View a DICOM image using js</h1>
+    <div id="content" style="width:400px; height: 400px; position: relative;">
+        <canvas class="container cornerstone-canvas" style="margin-top: 50px; display: block; height: 400px; width: 400px;" height="300" width="300" >
+        </canvas>
+    </div>
+    <div style="position: absolute;
+        top: 20%;
+        display: flex;
+        flex-direction: column;"> 
+        <button id="zoomIn" type="button" class="btn btn-default">
+            <i class="fa-solid fa-magnifying-glass-plus"></i>
+        </button>
+        <button id="zoomOut" type="button" class="btn btn-default">
+            <i class="fa-solid fa-magnifying-glass-minus"></i>
+        </button>
+        <button id="reset" type="button" class="btn btn-default">
+            <i class="fa-solid fa-ban"></i>
+        </button>
+    </div>
+    </main>
+    <script src="https://unpkg.com/cornerstone-core/dist/cornerstone.js"></script>
+    <script src="./js/exampleImageIdLoader.js"></script>
+    <script>
+        const imageId = 'example://1';
+        const element = document.getElementById('content');
+        cornerstone.enable(element);
+        cornerstone.loadImage(imageId).then(function(image) {
+            cornerstone.displayImage(element, image);
+        });
+        // Add event handlers to zoom the image in and out
+    document.getElementById('zoomIn').addEventListener('click', function (e) {
+        const viewport = cornerstone.getViewport(element);
+        viewport.scale += 0.25;
+        cornerstone.setViewport(element, viewport);
+    });
+    document.getElementById('zoomOut').addEventListener('click', function (e) {
+        const viewport = cornerstone.getViewport(element);
+        viewport.scale -= 0.25;
+        cornerstone.setViewport(element, viewport);
+    });
+    document.getElementById('reset').addEventListener('click', function (e) {
+        cornerstone.reset(element);
+    });
+
+    </script>
+   
+</body>
+</html>
